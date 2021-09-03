@@ -19,19 +19,24 @@ namespace AgenciaBancaria.App
                 {
                     //Listar conta
                     case "0":
-                        var listaContas = novoCliente.Lista();
+                        try { 
+                            var listaContas = novoCliente.Lista();
 
-                        if(listaContas.Count != 0) { 
+                            if(listaContas.Count != 0) { 
 
-                            foreach(var contas in listaContas)
-                            {
-                                Console.WriteLine(contas);
+                                foreach(var contas in listaContas)
+                                {
+                                    Console.WriteLine(contas);
 
+                                }
                             }
-                        }
-                        else
+                            else
+                            {
+                                Console.WriteLine("Nenhuma conta foi encontrada!");
+                            }
+                        }catch(Exception e)
                         {
-                            Console.WriteLine("Nenhuma conta foi encontrada!");
+                            throw new Exception(e.Message);
                         }
 
                         break;
