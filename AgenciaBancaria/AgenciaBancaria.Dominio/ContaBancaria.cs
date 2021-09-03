@@ -10,7 +10,7 @@ namespace AgenciaBancaria.Dominio
     //Init só pode setar com o construtor, não pode setar fora dele com um método
     //Private só pode setar na própria classe através de algum método
 
-    public class ContaBancaria
+    public abstract class ContaBancaria
     {
         public int NumeroConta { get; init; }
         public int DigitoVerificador { get; init; }
@@ -21,6 +21,7 @@ namespace AgenciaBancaria.Dominio
         public string Senha { get; private set; }
         public Cliente Cliente { get; init; }
 
+        //Contructor
         public ContaBancaria(Cliente cliente)
         {
             //Vai gerar um número randômico quando a conta for aberta  
@@ -30,8 +31,45 @@ namespace AgenciaBancaria.Dominio
             DigitoVerificador = random.Next(0,9);
             
             Situacao = SituacaoConta.criada;
-            
-            Cliente = cliente;
+
+            //Se não passar o cliente vai disparar uma exception
+            Cliente = cliente ?? throw new Exception("Cliente deve ser informado!");
         }
+
+        //Abertura de conta
+        public void AbrirConta(string senha)
+        {
+            Situacao = SituacaoConta.aberta;
+            DataAbertura = DateTime.Now;
+          
+            SetarSenha(senha);
+        }
+        
+        //Usuário vai digitar uma senha 
+        private void SetarSenha(string senha)
+        {
+            Senha = senha.ValidarCampos();
+        }
+    
+        //Método para sacar
+        //Virtual por que vai ser sob escrita por contra classe filha
+        public virtual void Sacar(string senha, decimal valor)
+        {
+            //Vai verificar se a senha está correta
+            if(Senha != senha)
+            {
+                Console.WriteLine("Senha incorreta");
+            }
+            //Vai verificar se existe saldo na conta
+            if(Saldo < valor)
+            {
+                Console.WriteLine("Seu saldo é insuficiente");
+            }
+
+            Saldo -= valor;
+
+        }
+    
+    
     }
 }
