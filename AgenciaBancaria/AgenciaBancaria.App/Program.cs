@@ -11,7 +11,7 @@ namespace AgenciaBancaria.App
 
             Cliente clientes = new Cliente("Eduardo", "123", "564", endereco);
 
-            ContaBancaria conta = new ContaBancaria(clientes);
+            ContaCorrente conta = new ContaCorrente(clientes, 100);
 
             conta.AbrirConta("senha da conta");
 
