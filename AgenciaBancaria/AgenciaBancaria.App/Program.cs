@@ -43,9 +43,16 @@ namespace AgenciaBancaria.App
 
                     //Abri conta
                     case "1":
-                        var informacaoCliente = InformeDadosPessoais();
-
-                        novoCliente.Criar(informacaoCliente);
+                        try
+                        {
+                            var informacaoCliente = InformeDadosPessoais();
+                            InformeTipoConta(informacaoCliente);
+                            novoCliente.Criar(informacaoCliente);
+                        }catch(Exception e)
+                        {
+                            throw new Exception(e.Message);
+                        }
+                        
 
                         break;
                     //Fecha conta
@@ -100,22 +107,83 @@ namespace AgenciaBancaria.App
             Console.WriteLine("Digite seu RG: ");
             string entradaRg = Console.ReadLine();
 
+            var endereco = InformeEndereco();
+
             Cliente cliente = new Cliente
                 (
                     id:213,
                     nome: entradaNome,
                     cPF: entradaCpf,
-                    rG: entradaRg
+                    rG: entradaRg,
+                   (Endereco)endereco
 
                 ) ;
+
             return cliente;
 
         }
 
         private static Endereco InformeEndereco()
         {
-            Endereco novoEndereco = new Endereco("rua","123","cidade","Estado");
+            Console.WriteLine("Informe o nome da sua rua: ");
+            string entradaLogadouro = Console.ReadLine();
+
+            Console.WriteLine("Informe seu CEP: ");
+            string entradaCEP = Console.ReadLine();
+
+            Console.WriteLine("Informe o nome da sua cidade: ");
+            string entradaCidade = Console.ReadLine();
+
+            Console.WriteLine("Informe o seu estado: ");
+            string entradaEstado = Console.ReadLine();
+
+            Endereco novoEndereco = new Endereco(entradaLogadouro,entradaCEP,entradaCidade,entradaEstado);
+
             return novoEndereco;
+        }
+
+        private static void InformeTipoConta(Cliente cliente)
+        {
+            Console.WriteLine("Informe qual tipo de conta você deseja: ");
+            Console.WriteLine("1 - Conta Corrente");
+            Console.WriteLine("2 - Conta Poupança");
+
+            int decisaoCorrente = int.Parse(Console.ReadLine());
+
+            if (decisaoCorrente == 1)
+            {
+                try
+                {
+                    Console.WriteLine("Digite o limite da sua conta");
+                    int limite = int.Parse(Console.ReadLine());
+                    ContaCorrente corrente = new ContaCorrente(cliente, limite);
+                    Console.WriteLine("Crie sua senha para abrir uma conta corrente!");
+                    string senha = Console.ReadLine();
+                    corrente.AbrirConta(senha);
+
+                    Console.WriteLine("Parabéns, sua conta Corrente foi criada com sucesso!");
+                }catch(Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+               
+            }
+            else
+            {
+                try
+                {
+                    ContaPoupanca poupanca = new ContaPoupanca(cliente);
+                    Console.WriteLine("Crie sua senha para abrir uma conta corrente!");
+                    string senha = Console.ReadLine();
+                    poupanca.AbrirConta(senha);
+
+                    Console.WriteLine("Parabéns, sua conta Popança foi criada com sucesso!");
+                }
+                catch (Exception e){
+                    throw new Exception(e.Message);
+                }
+                
+            }
         }
     }
 }

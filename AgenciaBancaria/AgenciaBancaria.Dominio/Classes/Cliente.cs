@@ -16,14 +16,14 @@ namespace AgenciaBancaria.Dominio
         public Endereco Endereco { get; private set; }
 
 
-        public Cliente(int id,string nome, string cPF, string rG) //Endereco endereco)
+        public Cliente(int id,string nome, string cPF, string rG, Endereco endereco)
         {
             Id = id;
             Nome = nome.ValidarCampos();
             CPF = cPF.ValidarCampos();
             RG = rG.ValidarCampos();
             Excluido = false;
-            //Endereco = endereco;
+            Endereco = endereco;
 
         }
 
@@ -33,7 +33,7 @@ namespace AgenciaBancaria.Dominio
             retornar += "Nome: " + Nome + Environment.NewLine;
             retornar += "CPF: " + CPF + Environment.NewLine;
             retornar += "RG: " + RG + Environment.NewLine;
-            retornar += Endereco + Environment.NewLine;
+            retornar += "Endereço: " + Endereco + Environment.NewLine;
 
             return retornar;
         }

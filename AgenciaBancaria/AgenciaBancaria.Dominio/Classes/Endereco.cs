@@ -25,9 +25,9 @@ namespace AgenciaBancaria.Dominio
         {
             string retornar = "";
             retornar += Logadouro + Environment.NewLine;
-            retornar += CEP + Environment.NewLine;
-            retornar += Cidade + Environment.NewLine;
-            retornar += Estado + Environment.NewLine;
+            retornar += "CEP: " + CEP + Environment.NewLine;
+            retornar += "Cidade: " + Cidade + Environment.NewLine;
+            retornar += "Estado: " + Estado + Environment.NewLine;
             return retornar;
         }
     }
