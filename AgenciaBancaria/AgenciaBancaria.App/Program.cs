@@ -6,7 +6,8 @@ namespace AgenciaBancaria.App
 {
     class Program
     {
-        public static ClienteRepositorio novoCliente = new ClienteRepositorio();
+        //conta corrente
+        public static CorrenteRepositorio novaContaCorrente = new CorrenteRepositorio();
         
         static void Main(string[] args)
         {
@@ -20,13 +21,13 @@ namespace AgenciaBancaria.App
                     //Listar conta
                     case "0":
                         try { 
-                            var listaContas = novoCliente.Lista();
+                            var listaContas = novaContaCorrente.Lista();
 
                             if(listaContas.Count != 0) { 
 
                                 foreach(var contas in listaContas)
                                 {
-                                    Console.WriteLine("{0} - {1} - {2}", contas.RetornarIdCliente() ,contas.RetornarNome(), contas.RetornarEndereço());
+                                    Console.WriteLine("ID:{0} - {1}", contas.RetornarIdConta() ,contas.RetornarCliente());
                                 }
                             }
                             else
@@ -45,7 +46,7 @@ namespace AgenciaBancaria.App
                         {
                             var informacaoCliente = InformeDadosPessoais();
                             InformeTipoConta(informacaoCliente);
-                            novoCliente.Criar(informacaoCliente);
+                            
                         }catch(Exception e)
                         {
                             throw new Exception(e.Message);
@@ -108,7 +109,6 @@ namespace AgenciaBancaria.App
 
             Cliente cliente = new Cliente
                 (
-                    id:novoCliente.ProximoId(),
                     nome: entradaNome,
                     cPF: entradaCpf,
                     rG: entradaRg,
@@ -153,10 +153,20 @@ namespace AgenciaBancaria.App
                 {
                     Console.WriteLine("Digite o limite da sua conta");
                     int limite = int.Parse(Console.ReadLine());
-                    ContaCorrente corrente = new ContaCorrente(cliente, limite);
+
+                    ContaCorrente correnteConta = new ContaCorrente
+                        (
+                        cliente:cliente,
+                        id: novaContaCorrente.ProximoId(), 
+                        limite :limite
+                        );
+
                     Console.WriteLine("Crie sua senha para abrir uma conta corrente!");
                     string senha = Console.ReadLine();
-                    corrente.AbrirConta(senha);
+
+                    correnteConta.AbrirConta(senha);
+
+                    novaContaCorrente.Criar(correnteConta);
 
                     Console.WriteLine("Parabéns, sua conta Corrente foi criada com sucesso!");
                 }catch(Exception e)
@@ -169,10 +179,16 @@ namespace AgenciaBancaria.App
             {
                 try
                 {
-                    ContaPoupanca poupanca = new ContaPoupanca(cliente);
+                    ContaPoupanca poupanca = new ContaPoupanca
+                        (
+                        cliente,
+                        123
+                        );
+
                     Console.WriteLine("Crie sua senha para abrir uma conta Poupança!");
                     string senha = Console.ReadLine();
-                    poupanca.AbrirConta(senha);
+
+                    //poupanca.AbrirConta(senha);
 
                     Console.WriteLine("Parabéns, sua conta Popança foi criada com sucesso!");
                 }

@@ -12,6 +12,7 @@ namespace AgenciaBancaria.Dominio
 
     public abstract class ContaBancaria
     {
+        public int Id { get; set; }
         public int NumeroConta { get; init; }
         public int DigitoVerificador { get; init; }
         public decimal Saldo { get; protected set; }
@@ -22,8 +23,9 @@ namespace AgenciaBancaria.Dominio
         public Cliente Cliente { get; init; }
 
         //Contructor
-        public ContaBancaria(Cliente cliente)
+        public ContaBancaria(Cliente cliente, int id)
         {
+            Id = id;
             //Vai gerar um número randômico quando a conta for aberta  
             Random random = new Random();
 
@@ -86,11 +88,14 @@ namespace AgenciaBancaria.Dominio
         }
 
         //TESTE 
-        public Cliente RetornarCliente()
+        public string RetornarCliente()
         {
-            return Cliente;
+            return Cliente.Nome;
         }
     
-    
+        public int RetornarIdConta()
+        {
+            return Id;
+        }
     }
 }

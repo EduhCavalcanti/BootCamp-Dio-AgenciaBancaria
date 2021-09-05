@@ -10,7 +10,7 @@ namespace AgenciaBancaria.Dominio
     {
         public decimal PercentualRendimento { get; set; }
 
-        public ContaPoupanca(Cliente cliente) : base(cliente)
+        public ContaPoupanca(Cliente cliente, int id) : base(cliente, id)
         {
             //0,30%
             PercentualRendimento = 0.003M;

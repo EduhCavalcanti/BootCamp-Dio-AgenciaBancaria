@@ -24,7 +24,7 @@ namespace AgenciaBancaria.Dominio
         public override string ToString()
         {
             string retornar = "";
-            retornar += "Rua: " + Logadouro + Environment.NewLine;
+            retornar += Logadouro + Environment.NewLine;
             retornar += "CEP: " + CEP + Environment.NewLine;
             retornar += "Cidade: " + Cidade + Environment.NewLine;
             retornar += "Estado: " + Estado + Environment.NewLine;

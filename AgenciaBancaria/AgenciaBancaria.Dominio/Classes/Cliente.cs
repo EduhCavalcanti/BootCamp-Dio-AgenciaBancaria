@@ -8,7 +8,7 @@ namespace AgenciaBancaria.Dominio
 {
     public class Cliente
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
         public string Nome { get; private set; }
         public string CPF { get; private set; }
         public string RG { get; private set; }
@@ -16,9 +16,9 @@ namespace AgenciaBancaria.Dominio
         public Endereco Endereco { get; private set; }
 
 
-        public Cliente(int id,string nome, string cPF, string rG, Endereco endereco)
+        public Cliente(string nome, string cPF, string rG, Endereco endereco)
         {
-            Id = id;
+            
             Nome = nome.ValidarCampos();
             CPF = cPF.ValidarCampos();
             RG = rG.ValidarCampos();
@@ -50,18 +50,13 @@ namespace AgenciaBancaria.Dominio
             return Excluido;
         }
 
-        //Retornar Id do cliente
-        public int RetornarIdCliente()
-        {
-            return Id;
-        }
-
         //Retornar Nome do cliente
         public string RetornarNome()
         {
             return Nome;
         }
     
+        //Retornar Endereço
         public Endereco RetornarEndereço()
         {
             return Endereco;

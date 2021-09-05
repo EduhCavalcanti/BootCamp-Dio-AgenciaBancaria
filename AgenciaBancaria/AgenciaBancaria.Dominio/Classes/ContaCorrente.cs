@@ -10,7 +10,7 @@ namespace AgenciaBancaria.Dominio
     {
         public decimal ValorTaxaManutencao { get; set; }
         public decimal Limite { get; set; }
-        public ContaCorrente(Cliente cliente, decimal limite) : base(cliente)
+        public ContaCorrente(Cliente cliente, int id, decimal limite) : base(cliente, id)
         {
             //5 centavos
             ValorTaxaManutencao = 0.05M;
@@ -34,5 +34,6 @@ namespace AgenciaBancaria.Dominio
             Saldo -= valor;
 
         }
+    
     }
 }
