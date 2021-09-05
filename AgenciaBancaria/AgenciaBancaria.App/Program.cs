@@ -26,8 +26,7 @@ namespace AgenciaBancaria.App
 
                                 foreach(var contas in listaContas)
                                 {
-                                    Console.WriteLine(contas);
-
+                                    Console.WriteLine("{0} - {1} - {2}", contas.RetornarIdCliente() ,contas.RetornarNome(), contas.RetornarEndereço());
                                 }
                             }
                             else
@@ -38,7 +37,6 @@ namespace AgenciaBancaria.App
                         {
                             throw new Exception(e.Message);
                         }
-
                         break;
 
                     //Abri conta
@@ -51,10 +49,9 @@ namespace AgenciaBancaria.App
                         }catch(Exception e)
                         {
                             throw new Exception(e.Message);
-                        }
-                        
-
+                        }      
                         break;
+
                     //Fecha conta
                     case "2":
 
@@ -111,7 +108,7 @@ namespace AgenciaBancaria.App
 
             Cliente cliente = new Cliente
                 (
-                    id:213,
+                    id:novoCliente.ProximoId(),
                     nome: entradaNome,
                     cPF: entradaCpf,
                     rG: entradaRg,
@@ -173,7 +170,7 @@ namespace AgenciaBancaria.App
                 try
                 {
                     ContaPoupanca poupanca = new ContaPoupanca(cliente);
-                    Console.WriteLine("Crie sua senha para abrir uma conta corrente!");
+                    Console.WriteLine("Crie sua senha para abrir uma conta Poupança!");
                     string senha = Console.ReadLine();
                     poupanca.AbrirConta(senha);
 
@@ -184,6 +181,15 @@ namespace AgenciaBancaria.App
                 }
                 
             }
+        }
+
+        private static void FecharConta()
+        {
+            Console.WriteLine("Entre com sua conta. Digite o numero da conta: ");
+            string entradaUsuario = Console.ReadLine();
+
+            
+            
         }
     }
 }

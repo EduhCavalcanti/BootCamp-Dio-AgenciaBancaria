@@ -41,8 +41,23 @@ namespace AgenciaBancaria.Dominio
         {
             Situacao = SituacaoConta.aberta;
             DataAbertura = DateTime.Now;
-          
+
             SetarSenha(senha);
+        }
+
+        //Fechar conta
+        public void FecharConta(string senha, Cliente cliente)
+        {
+            if(Cliente != cliente)
+            {
+                throw new Exception("Digite um cliente válido");
+            }
+            if(Senha != senha)
+            {
+                throw new Exception("Digite uma senha válida");
+            }
+            Situacao = SituacaoConta.encerrada;
+            DataEncerramento = DateTime.Now;
         }
         
         //Usuário vai digitar uma senha 
@@ -68,6 +83,12 @@ namespace AgenciaBancaria.Dominio
 
             Saldo -= valor;
 
+        }
+
+        //TESTE 
+        public Cliente RetornarCliente()
+        {
+            return Cliente;
         }
     
     

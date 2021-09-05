@@ -55,6 +55,16 @@ namespace AgenciaBancaria.Dominio
         {
             return Id;
         }
+
+        //Retornar Nome do cliente
+        public string RetornarNome()
+        {
+            return Nome;
+        }
     
+        public Endereco RetornarEndereço()
+        {
+            return Endereco;
+        }
     }
 }
