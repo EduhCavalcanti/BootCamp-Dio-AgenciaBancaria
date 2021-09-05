@@ -8,7 +8,8 @@ namespace AgenciaBancaria.App
     {
         //conta corrente
         public static CorrenteRepositorio novaContaCorrente = new CorrenteRepositorio();
-        
+        //Conta Poupança
+        public static PoupancaRepositorio novaContaPoupanca = new PoupancaRepositorio();
         static void Main(string[] args)
         {
 
@@ -20,24 +21,9 @@ namespace AgenciaBancaria.App
                 {
                     //Listar conta
                     case "0":
-                        try { 
-                            var listaContas = novaContaCorrente.Lista();
 
-                            if(listaContas.Count != 0) { 
+                        ListarContas();
 
-                                foreach(var contas in listaContas)
-                                {
-                                    Console.WriteLine("ID:{0} - {1}", contas.RetornarIdConta() ,contas.RetornarCliente());
-                                }
-                            }
-                            else
-                            {
-                                Console.WriteLine("Nenhuma conta foi encontrada!");
-                            }
-                        }catch(Exception e)
-                        {
-                            throw new Exception(e.Message);
-                        }
                         break;
 
                     //Abri conta
@@ -181,14 +167,16 @@ namespace AgenciaBancaria.App
                 {
                     ContaPoupanca poupanca = new ContaPoupanca
                         (
-                        cliente,
-                        123
+                        cliente: cliente,
+                        id: novaContaPoupanca.ProximoId()
                         );
 
                     Console.WriteLine("Crie sua senha para abrir uma conta Poupança!");
                     string senha = Console.ReadLine();
 
-                    //poupanca.AbrirConta(senha);
+                    poupanca.AbrirConta(senha);
+
+                    novaContaPoupanca.Criar(poupanca);
 
                     Console.WriteLine("Parabéns, sua conta Popança foi criada com sucesso!");
                 }
@@ -199,13 +187,43 @@ namespace AgenciaBancaria.App
             }
         }
 
+        private static void ListarContas()
+        {
+            try
+            {
+                //Retorna lista de conta corrente
+                var listaContasCorrente = novaContaCorrente.Lista();
+                //Retorna lista de conta poupança
+                var listaContasPoupanca = novaContaPoupanca.Lista();
+
+                //Verifica se existe alguma conta
+                if (listaContasCorrente.Count != 0 || listaContasPoupanca.Count !=0)
+                {
+                    foreach (var contas in listaContasCorrente)
+                    {
+                        Console.WriteLine("ID:{0} - {1}", contas.RetornarIdConta(), contas.RetornarCliente());
+                    }
+                    foreach(var contas in listaContasPoupanca)
+                    {
+                        Console.WriteLine("ID:{0} - {1}", contas.RetornarIdConta(), contas.RetornarCliente());
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Nenhuma conta foi encontrada!");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
         private static void FecharConta()
         {
             Console.WriteLine("Entre com sua conta. Digite o numero da conta: ");
             string entradaUsuario = Console.ReadLine();
 
-            
-            
         }
     }
 }

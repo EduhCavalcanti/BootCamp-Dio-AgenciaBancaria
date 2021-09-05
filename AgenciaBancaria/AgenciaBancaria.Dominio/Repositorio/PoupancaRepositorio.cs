@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AgenciaBancaria.Dominio.Repositorio
 {
-    class PoupancaRepositorio : IRepositorio<ContaPoupanca>
+    public class PoupancaRepositorio : IRepositorio<ContaPoupanca>
     {
         List<ContaPoupanca> listaPoupança = new List<ContaPoupanca>();
 
