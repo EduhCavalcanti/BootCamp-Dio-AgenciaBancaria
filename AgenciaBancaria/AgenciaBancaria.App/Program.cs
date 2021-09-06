@@ -44,16 +44,12 @@ namespace AgenciaBancaria.App
                     case "2":
                         FecharConta();
                         break;
-                    //Verificar se existe saldo na conta
+                    //Depositar
                     case "3":
-
+                        Depositar();
                         break;
-                    //Depositar 
+                    //Sacar 
                     case "4":
-
-                        break;
-                    //Sacar
-                    case "5":
 
                         break;
 
@@ -71,14 +67,12 @@ namespace AgenciaBancaria.App
             Console.WriteLine("0 - Listar Contas");
             Console.WriteLine("1 - Abri uma conta: ");
             Console.WriteLine("2 - Fechar uma conta: ");
-            Console.WriteLine("3 - Verificar se existe saldo na conta: ");
-            Console.WriteLine("4 - Depositar: ");
-            Console.WriteLine("5 - Sacar: ");
+            Console.WriteLine("3 - Depositar: ");
+            Console.WriteLine("4 - Sacar: ");
             Console.WriteLine("X - Sair: ");
 
             string entradaOpcao = Console.ReadLine().ToUpper();
             return entradaOpcao;
-
         }
 
         private static Cliente InformeDadosPessoais()
@@ -327,5 +321,111 @@ namespace AgenciaBancaria.App
 
             }
         }
+    
+        private static void Depositar()
+        {
+            Console.WriteLine("Em qual conta você deseja depositar? ");
+            Console.WriteLine("1 - Conta corrente");
+            Console.WriteLine("2 - Conta poupança");
+
+            string decisaoUsuario = Console.ReadLine();
+
+            if (decisaoUsuario == "1")
+            {
+                var ContaCorrente = novaContaCorrente.Lista();
+
+                Console.WriteLine("Digite o cpf da conta que você deseja depositar : ");
+                string entradaCpfUsuario = Console.ReadLine();
+
+                foreach(var contas in ContaCorrente)
+                {
+                    string cpfCliente = contas.RetornarCpf();
+
+                    //Vai verificar se o Cpf passado é o mesmo cadastrado
+                    if (entradaCpfUsuario == cpfCliente)
+                    {
+                        //Vai passar a senha
+                        Console.WriteLine("Conta encontrada! Digite sua senha para entrar na conta: ");
+                        string usuarioSenha = Console.ReadLine();
+
+                        bool verificarSenha = contas.VerificarSenha(usuarioSenha);
+
+                        if (!verificarSenha)
+                        {
+                            Console.WriteLine("Senha errada, verificar senha!");
+                            return;
+                        }
+
+                        try
+                        {
+                            Console.WriteLine("Digite o valor do seu deposito: ");
+                            decimal valorDeposito = decimal.Parse(Console.ReadLine());
+
+                            decimal saldoContaCorrente = contas.Depositar(valorDeposito);
+
+                            Console.WriteLine($"Deposito feito com sucesso! Seu saldo agora é: R${saldoContaCorrente}");
+                        }
+                        catch (Exception e)
+                        {
+                            throw new Exception(e.Message);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Conta não encontrada, tente novamente!");
+                    }
+                }
+
+            }
+            else if (decisaoUsuario == "2")
+            {
+                var contasPoupanca = novaContaPoupanca.Lista();
+
+                Console.WriteLine("Digite o cpf da conta que você deseja depositar : ");
+                string entradaCpfUsuario = Console.ReadLine();
+
+                foreach (var contas in contasPoupanca)
+                {
+                    string cpfCliente = contas.RetornarCpf();
+
+                    //Vai verificar se o Cpf passado é o mesmo cadastrado
+                    if (entradaCpfUsuario == cpfCliente)
+                    {
+                        //Vai passar a senha
+                        Console.WriteLine("Conta encontrada! Digite sua senha para entrar na conta: ");
+                        string usuarioSenha = Console.ReadLine();
+
+                        bool verificarSenha = contas.VerificarSenha(usuarioSenha);
+
+                        if (!verificarSenha)
+                        {
+                            Console.WriteLine("Senha errada, verificar senha!");
+                            return;
+                        }
+
+                        try
+                        {
+                            Console.WriteLine("Digite o valor do seu deposito: ");
+                            decimal valorDeposito = decimal.Parse(Console.ReadLine());
+
+                            decimal saldoContaCorrente = contas.Depositar(valorDeposito);
+
+                            Console.WriteLine($"Deposito feito com sucesso! Seu saldo agora é: R${saldoContaCorrente}");
+                        }
+                        catch (Exception e)
+                        {
+                            throw new Exception(e.Message);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Não existe nenhuma conta com esse CPF");
+                    }
+
+                }
+            }
+
+        }
+    
     }
 }

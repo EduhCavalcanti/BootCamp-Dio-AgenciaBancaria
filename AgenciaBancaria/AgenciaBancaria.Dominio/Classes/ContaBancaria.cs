@@ -90,6 +90,11 @@ namespace AgenciaBancaria.Dominio
 
         }
 
+        //Depositar
+        public decimal Depositar(decimal valor)
+        {
+            return Saldo += valor;
+        }
         //Retorna nome do cliente
         public string RetornarCliente()
         {
