@@ -50,7 +50,7 @@ namespace AgenciaBancaria.App
                         break;
                     //Sacar 
                     case "4":
-
+                        Sacar();
                         break;
 
                 }
@@ -425,6 +425,114 @@ namespace AgenciaBancaria.App
                 }
             }
 
+        }
+
+        private static void Sacar()
+        {
+            Console.WriteLine("Em qual conta você deseja depositar? ");
+            Console.WriteLine("1 - Conta corrente");
+            Console.WriteLine("2 - Conta poupança");
+
+            string decisaoUsuario = Console.ReadLine();
+
+            if (decisaoUsuario == "1")
+            {
+                var ContaCorrente = novaContaCorrente.Lista();
+
+                Console.WriteLine("Digite o cpf da conta que você deseja depositar : ");
+                string entradaCpfUsuario = Console.ReadLine();
+
+                foreach (var contas in ContaCorrente)
+                {
+                    string cpfCliente = contas.RetornarCpf();
+
+                    //Vai verificar se o Cpf passado é o mesmo cadastrado
+                    if (entradaCpfUsuario == cpfCliente)
+                    {
+                        //Vai passar a senha
+                        Console.WriteLine("Conta encontrada! Digite sua senha para entrar na conta: ");
+                        string usuarioSenha = Console.ReadLine();
+
+                        bool verificarSenha = contas.VerificarSenha(usuarioSenha);
+
+                        if (!verificarSenha)
+                        {
+                            Console.WriteLine("Senha errada, verificar senha!");
+                            return;
+                        }
+
+                        try
+                        {
+                            Console.WriteLine("Digite o valor do seu saque: ");
+                            decimal valorSaque = decimal.Parse(Console.ReadLine());
+
+                            contas.Sacar(valorSaque);
+
+                            decimal saldoContaCorrente = contas.RetornarSaldo();
+
+                            Console.WriteLine($"Seu saldo agora é: R${saldoContaCorrente}");
+                        }
+                        catch (Exception e)
+                        {
+                            throw new Exception(e.Message);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Conta não encontrada, tente novamente!");
+                    }
+                }
+
+            }
+            else if (decisaoUsuario == "2")
+            {
+                var contasPoupanca = novaContaPoupanca.Lista();
+
+                Console.WriteLine("Digite o cpf da conta que você deseja depositar : ");
+                string entradaCpfUsuario = Console.ReadLine();
+
+                foreach (var contas in contasPoupanca)
+                {
+                    string cpfCliente = contas.RetornarCpf();
+
+                    //Vai verificar se o Cpf passado é o mesmo cadastrado
+                    if (entradaCpfUsuario == cpfCliente)
+                    {
+                        //Vai passar a senha
+                        Console.WriteLine("Conta encontrada! Digite sua senha para entrar na conta: ");
+                        string usuarioSenha = Console.ReadLine();
+
+                        bool verificarSenha = contas.VerificarSenha(usuarioSenha);
+
+                        if (!verificarSenha)
+                        {
+                            Console.WriteLine("Senha errada, verificar senha!");
+                            return;
+                        }
+
+                        try
+                        {
+                            Console.WriteLine("Digite o valor do seu saque: ");
+                            decimal valorSaque = decimal.Parse(Console.ReadLine());
+
+                            contas.Sacar(valorSaque);
+
+                            decimal saldoContaCorrente = contas.RetornarSaldo();
+
+                            Console.WriteLine($"Seu saldo agora é: R${saldoContaCorrente}");
+                        }
+                        catch (Exception e)
+                        {
+                            throw new Exception(e.Message);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Não existe nenhuma conta com esse CPF");
+                    }
+
+                }
+            }
         }
     
     }

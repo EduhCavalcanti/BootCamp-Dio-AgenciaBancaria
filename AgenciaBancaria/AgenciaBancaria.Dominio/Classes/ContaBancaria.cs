@@ -73,21 +73,23 @@ namespace AgenciaBancaria.Dominio
     
         //Método para sacar
         //Virtual por que vai ser sob escrita por contra classe filha
-        public virtual void Sacar(string senha, decimal valor)
+        public virtual void Sacar(decimal valor)
         {
-            //Vai verificar se a senha está correta
-            if(Senha != senha)
-            {
-                Console.WriteLine("Senha incorreta");
-            }
             //Vai verificar se existe saldo na conta
             if(Saldo < valor)
             {
                 Console.WriteLine("Seu saldo é insuficiente");
             }
+            else 
+            { 
+                Saldo -= valor;
+            }
+        }
 
-            Saldo -= valor;
-
+        //Retornar saldo
+        public decimal RetornarSaldo()
+        {
+            return Saldo;
         }
 
         //Depositar

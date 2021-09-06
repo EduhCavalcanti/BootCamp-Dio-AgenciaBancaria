@@ -20,21 +20,17 @@ namespace AgenciaBancaria.Dominio
         }
 
         //Override por que sobre escreveu o método sacar da classe pai
-        public override void Sacar(string senha, decimal valor)
+        public override void Sacar(decimal valor)
         {
-            //Vai verificar se a senha está correta
-            if (Senha != senha)
-            {
-                Console.WriteLine("Senha incorreta");
-            }
             //Vai verificar se existe saldo mais Limite na conta
             if ((Limite + Saldo) < valor)
             {
                 Console.WriteLine("Seu saldo é insuficiente");
             }
-
-            Saldo -= valor;
-
+            else
+            {
+                Saldo -= valor;
+            }
         }
     
     }
