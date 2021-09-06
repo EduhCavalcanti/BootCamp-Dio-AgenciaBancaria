@@ -10,6 +10,7 @@ namespace AgenciaBancaria.App
         public static CorrenteRepositorio novaContaCorrente = new CorrenteRepositorio();
         //Conta Poupança
         public static PoupancaRepositorio novaContaPoupanca = new PoupancaRepositorio();
+
         static void Main(string[] args)
         {
 
@@ -31,7 +32,7 @@ namespace AgenciaBancaria.App
                         try
                         {
                             var informacaoCliente = InformeDadosPessoais();
-                            InformeTipoConta(informacaoCliente);
+                            CriarConta(informacaoCliente);
                             
                         }catch(Exception e)
                         {
@@ -41,7 +42,7 @@ namespace AgenciaBancaria.App
 
                     //Fecha conta
                     case "2":
-
+                        FecharConta();
                         break;
                     //Verificar se existe saldo na conta
                     case "3":
@@ -125,7 +126,7 @@ namespace AgenciaBancaria.App
             return novoEndereco;
         }
 
-        private static void InformeTipoConta(Cliente cliente)
+        private static void CriarConta(Cliente cliente)
         {
             Console.WriteLine("Informe qual tipo de conta você deseja: ");
             Console.WriteLine("1 - Conta Corrente");
@@ -201,11 +202,11 @@ namespace AgenciaBancaria.App
                 {
                     foreach (var contas in listaContasCorrente)
                     {
-                        Console.WriteLine("ID:{0} - {1}", contas.RetornarIdConta(), contas.RetornarCliente());
+                        Console.WriteLine("ID:{0} - {1} - {2}", contas.RetornarIdConta(), contas.RetornarCliente(), contas.retornarSituacaoDaConta());
                     }
                     foreach(var contas in listaContasPoupanca)
                     {
-                        Console.WriteLine("ID:{0} - {1}", contas.RetornarIdConta(), contas.RetornarCliente());
+                        Console.WriteLine("ID:{0} - {1} - Situação da conta: {2}", contas.RetornarIdConta(), contas.RetornarCliente(), contas.retornarSituacaoDaConta());
                     }
                 }
                 else
@@ -221,8 +222,57 @@ namespace AgenciaBancaria.App
 
         private static void FecharConta()
         {
-            Console.WriteLine("Entre com sua conta. Digite o numero da conta: ");
-            string entradaUsuario = Console.ReadLine();
+            Console.WriteLine("Qual conta você deseja fechar? ");
+            Console.WriteLine("1 - Conta corrente");
+            Console.WriteLine("2 - Conta poupança");
+
+            string decisaoUsuario = Console.ReadLine();
+
+            if(decisaoUsuario == "1") { 
+
+                var ContaCorrente = novaContaCorrente.Lista();
+
+                
+                Console.WriteLine("Escolha o Id da conta que você deseja fechar : ");
+                string entradaCpfUsuario = Console.ReadLine();
+
+                foreach(var contas in ContaCorrente)
+                {
+                    string cpfCliente = contas.RetornarCpf();
+
+                    //Vai verificar se o Cpf passado é o mesmo cadastrado
+                    if(entradaCpfUsuario == cpfCliente)
+                    {
+                        //Vai passar a senha
+                        Console.WriteLine("Conta encontrada! Digite sua senha para entrar na conta: ");
+                        string usuarioSenha = Console.ReadLine();
+
+                        bool verificarSenha = contas.VerificarSenha(usuarioSenha);
+
+                        if (!verificarSenha)
+                        {
+                            Console.WriteLine("Senha errada, verificar senha!");
+                            return;
+                        }
+
+                        try
+                        {
+                            int idDacontaCorrente = contas.RetornarIdConta();
+                            novaContaCorrente.Excluir(idDacontaCorrente);
+                            Console.WriteLine("Sua conta foi fechada com sucesso");
+                        }
+                        catch (Exception e)
+                        {
+                            throw new Exception(e.Message);
+                        }
+                    }
+                    Console.WriteLine("Não existe nenhuma conta com esse CPF");
+                    
+                    
+                }
+
+            }
+
 
         }
     }

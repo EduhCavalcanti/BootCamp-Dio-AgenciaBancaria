@@ -17,7 +17,7 @@ namespace AgenciaBancaria.Dominio.Repositorio
 
         public void Excluir(int id)
         {
-            throw new NotImplementedException();
+            listaCorrrente[id].FecharConta();
         }
 
         public List<ContaCorrente> Lista()

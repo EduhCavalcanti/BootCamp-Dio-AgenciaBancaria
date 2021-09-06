@@ -10,6 +10,8 @@ namespace AgenciaBancaria.Dominio
     {
         public decimal ValorTaxaManutencao { get; set; }
         public decimal Limite { get; set; }
+        
+        //Construtor
         public ContaCorrente(Cliente cliente, int id, decimal limite) : base(cliente, id)
         {
             //5 centavos

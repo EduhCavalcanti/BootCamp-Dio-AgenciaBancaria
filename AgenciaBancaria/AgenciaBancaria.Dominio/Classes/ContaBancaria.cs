@@ -38,6 +38,17 @@ namespace AgenciaBancaria.Dominio
             Cliente = cliente ?? throw new Exception("Cliente deve ser informado!");
         }
 
+        public override string ToString()
+        {
+            string retornar = "";
+            retornar += Cliente + Environment.NewLine;
+            retornar += "Numero da conta: " + NumeroConta + Environment.NewLine;
+            retornar += "Saldo da conta: " + Saldo + Environment.NewLine;
+            retornar += "Situação da conta: " + Situacao + Environment.NewLine;
+
+            return retornar;
+        }
+
         //Abertura de conta
         public void AbrirConta(string senha)
         {
@@ -48,9 +59,9 @@ namespace AgenciaBancaria.Dominio
         }
 
         //Fechar conta
-        public void FecharConta(string senha, Cliente cliente)
+        public void FecharConta()
         {
-            if(Cliente != cliente)
+            /*if(Cliente != cliente)
             {
                 throw new Exception("Digite um cliente válido");
             }
@@ -58,6 +69,7 @@ namespace AgenciaBancaria.Dominio
             {
                 throw new Exception("Digite uma senha válida");
             }
+            */
             Situacao = SituacaoConta.encerrada;
             DataEncerramento = DateTime.Now;
         }
@@ -87,15 +99,36 @@ namespace AgenciaBancaria.Dominio
 
         }
 
-        //TESTE 
+        //Retorna nome do cliente
         public string RetornarCliente()
         {
             return Cliente.Nome;
         }
-    
+        //Retorna Id da conta
         public int RetornarIdConta()
         {
             return Id;
         }
+        //Retornar Cpf do cliente
+        public string RetornarCpf()
+        {
+            return Cliente.CPF;
+        }
+
+        public SituacaoConta retornarSituacaoDaConta()
+        {
+            return Situacao;
+        }
+
+        //Verifica o senha passada
+        public bool VerificarSenha(string senha)
+        {
+            if(Senha != senha)
+            {
+                return false;
+            }
+            return true;
+        }
+    
     }
 }
