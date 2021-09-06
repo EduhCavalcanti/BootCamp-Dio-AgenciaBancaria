@@ -206,7 +206,7 @@ namespace AgenciaBancaria.App
                     }
                     foreach(var contas in listaContasPoupanca)
                     {
-                        Console.WriteLine("ID:{0} - {1} - Situação da conta: {2}", contas.RetornarIdConta(), contas.RetornarCliente(), contas.retornarSituacaoDaConta());
+                        Console.WriteLine("ID:{0} - {1} - {2}", contas.RetornarIdConta(), contas.RetornarCliente(), contas.retornarSituacaoDaConta());
                     }
                 }
                 else
@@ -228,52 +228,104 @@ namespace AgenciaBancaria.App
 
             string decisaoUsuario = Console.ReadLine();
 
-            if(decisaoUsuario == "1") { 
+            if(decisaoUsuario == "1") {
 
-                var ContaCorrente = novaContaCorrente.Lista();
+                FecharContaCorrente();
+            }
+            else if(decisaoUsuario == "2")
+            {
+                FecharContaPoupanca();
+            }
+        }
 
-                
-                Console.WriteLine("Escolha o Id da conta que você deseja fechar : ");
-                string entradaCpfUsuario = Console.ReadLine();
+        private static void FecharContaCorrente()
+        {
+            var ContaCorrente = novaContaCorrente.Lista();
 
-                foreach(var contas in ContaCorrente)
+            Console.WriteLine("Digite o cpf da conta que você deseja fechar : ");
+            string entradaCpfUsuario = Console.ReadLine();
+
+            foreach (var contas in ContaCorrente)
+            {
+                string cpfCliente = contas.RetornarCpf();
+
+                //Vai verificar se o Cpf passado é o mesmo cadastrado
+                if (entradaCpfUsuario == cpfCliente)
                 {
-                    string cpfCliente = contas.RetornarCpf();
+                    //Vai passar a senha
+                    Console.WriteLine("Conta encontrada! Digite sua senha para entrar na conta: ");
+                    string usuarioSenha = Console.ReadLine();
 
-                    //Vai verificar se o Cpf passado é o mesmo cadastrado
-                    if(entradaCpfUsuario == cpfCliente)
+                    bool verificarSenha = contas.VerificarSenha(usuarioSenha);
+
+                    if (!verificarSenha)
                     {
-                        //Vai passar a senha
-                        Console.WriteLine("Conta encontrada! Digite sua senha para entrar na conta: ");
-                        string usuarioSenha = Console.ReadLine();
-
-                        bool verificarSenha = contas.VerificarSenha(usuarioSenha);
-
-                        if (!verificarSenha)
-                        {
-                            Console.WriteLine("Senha errada, verificar senha!");
-                            return;
-                        }
-
-                        try
-                        {
-                            int idDacontaCorrente = contas.RetornarIdConta();
-                            novaContaCorrente.Excluir(idDacontaCorrente);
-                            Console.WriteLine("Sua conta foi fechada com sucesso");
-                        }
-                        catch (Exception e)
-                        {
-                            throw new Exception(e.Message);
-                        }
+                        Console.WriteLine("Senha errada, verificar senha!");
+                        return;
                     }
+
+                    try
+                    {
+                        int idDacontaCorrente = contas.RetornarIdConta();
+                        novaContaCorrente.Excluir(idDacontaCorrente);
+                        Console.WriteLine("Sua conta foi fechada com sucesso");
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception(e.Message);
+                    }
+                }
+                else
+                {
                     Console.WriteLine("Não existe nenhuma conta com esse CPF");
-                    
-                    
                 }
 
             }
+        }
 
+        private static void FecharContaPoupanca()
+        {
+            var contasPoupanca = novaContaPoupanca.Lista();
 
+            Console.WriteLine("Digite o cpf da conta que você deseja fechar : ");
+            string entradaCpfUsuario = Console.ReadLine();
+
+            foreach(var contas in contasPoupanca)
+            {
+                string cpfCliente = contas.RetornarCpf();
+
+                //Vai verificar se o Cpf passado é o mesmo cadastrado
+                if (entradaCpfUsuario == cpfCliente)
+                {
+                    //Vai passar a senha
+                    Console.WriteLine("Conta encontrada! Digite sua senha para entrar na conta: ");
+                    string usuarioSenha = Console.ReadLine();
+
+                    bool verificarSenha = contas.VerificarSenha(usuarioSenha);
+
+                    if (!verificarSenha)
+                    {
+                        Console.WriteLine("Senha errada, verificar senha!");
+                        return;
+                    }
+
+                    try
+                    {
+                        int idDacontaCorrente = contas.RetornarIdConta();
+                        novaContaCorrente.Excluir(idDacontaCorrente);
+                        Console.WriteLine("Sua conta foi fechada com sucesso");
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception(e.Message);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Não existe nenhuma conta com esse CPF");
+                }
+
+            }
         }
     }
 }
